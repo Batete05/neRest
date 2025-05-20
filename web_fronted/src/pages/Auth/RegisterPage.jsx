@@ -7,11 +7,10 @@ import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
-    fullName: "",
+    firstName: "",
+    lastName: "",
     email: "",
-    phone: "",
     password: "",
-    confirmPassword: "",
   });
 
   const [error, setError] = useState("");
@@ -25,18 +24,14 @@ const RegisterPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match!");
-      return;
-    }
 
     setError("");
     setLoading(true);
 
     const payload = {
-      fullName: formData.fullName,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
       email: formData.email,
-      phone: formData.phone,
       password: formData.password,
     };
 
@@ -53,10 +48,7 @@ const RegisterPage = () => {
       return;
     }
 
-    setSuccess("Check your email for the verification code.");
-    setTimeout(() => {
-      navigate("/auth/login", { state: { email: formData.email } });
-    }, 2000);
+    navigate("/login");
   };
 
   return (
@@ -89,22 +81,31 @@ const RegisterPage = () => {
                 {error}
               </div>
             )}
-            {success && (
-              <div className="mb-4 p-3 text-green-700 bg-red-100 border border-green-300 rounded text-center">
-                {success}
-              </div>
-            )}
 
             <form className="space-y-4" onSubmit={handleSubmit}>
-              {/* Full Name */}
+              {/* First Name */}
               <div>
-                <label className="block text-gray-700 mb-1">Full Name</label>
+                <label className="block text-gray-700 mb-1">First Name</label>
                 <input
                   type="text"
-                  name="fullName"
-                  placeholder="Enter your full name"
+                  name="firstName"
+                  placeholder="Enter your first name"
                   className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={formData.fullName}
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              {/* Last Name */}
+              <div>
+                <label className="block text-gray-700 mb-1">Last Name</label>
+                <input
+                  type="text"
+                  name="lastName"
+                  placeholder="Enter your last name"
+                  className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={formData.lastName}
                   onChange={handleChange}
                   required
                 />
@@ -124,20 +125,6 @@ const RegisterPage = () => {
                 />
               </div>
 
-              {/* Phone */}
-              <div>
-                <label className="block text-gray-700 mb-1">Phone</label>
-                <input
-                  type="tel"
-                  name="phone"
-                  placeholder="Enter your phone number"
-                  className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
               {/* Password */}
               <div>
                 <label className="block text-gray-700 mb-1">Password</label>
@@ -147,22 +134,6 @@ const RegisterPage = () => {
                   placeholder="Enter your password"
                   className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   value={formData.password}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              {/* Confirm Password */}
-              <div>
-                <label className="block text-gray-700 mb-1">
-                  Confirm Password
-                </label>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  placeholder="Confirm your password"
-                  className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={formData.confirmPassword}
                   onChange={handleChange}
                   required
                 />
@@ -182,7 +153,7 @@ const RegisterPage = () => {
             <div className="mt-6 text-center text-sm text-gray-600">
               Already have an account?{" "}
               <a
-                href="/auth/login"
+                href="/login"
                 className="text-blue-600 font-medium hover:underline"
               >
                 Login here →

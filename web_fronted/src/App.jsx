@@ -19,7 +19,7 @@ function App() {
             <Route path="/auth/login" element={<LoginPage />} />
             <Route path="/auth/register" element={<RegisterPage />} />
             {/* <Route path="/auth/login/otp" element={<VerifyOtp />} /> */}
-            <Route path="/dashboard" element={<Dashboard />} />
+            {/* <Route path="/dashboard" element={<Dashboard />} /> */}
             {/* <Route path="/add-book" element={<AddBook />} /> */}
             {/* <Route path="/request-book" element={<RequestBook />} /> */}
           </Routes>

@@ -5,7 +5,7 @@ import { sendData } from "../../../utils/helpus";
 import { servers } from "../../../utils/api";
 
 const LoginPage = () => {
-  const [data, setData] = useState({ email_phone: "", password: "" });
+  const [data, setData] = useState({ email: "", password: "" });
   const [popup, setPopup] = useState("");
   const [success, setSuccess] = useState("");
   const [loader, setLoader] = useState(false);
@@ -21,7 +21,7 @@ const LoginPage = () => {
     setLoader(true);
     setPopup("");
 
-    const result = await sendData(`${servers.activities}/auth/net/login`, data, "");
+    const result = await sendData(`${servers.activities}/auth/login`, data, "");
     setLoader(false);
 
     if (result.error) {
@@ -29,9 +29,9 @@ const LoginPage = () => {
       return;
     }
 
-    setSuccess("Check your email to verify your account.");
+    setSuccess("Logged In succsfully, Redirecting to Dashboard");
     setTimeout(() => {
-      navigate("/auth/login/otp", { state: { email: data.email_phone } });
+      navigate("/dashboard", { state: { email: data.email } });
     }, 2000);
   };
 
@@ -72,9 +72,9 @@ const LoginPage = () => {
             <div>
               <label className="block text-gray-700 mb-1">Email</label>
               <input
-                name="email_phone"
+                name="email"
                 type="email"
-                value={data.email_phone}
+                value={data.email}
                 onChange={handleChange}
                 placeholder="Enter email"
                 className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
