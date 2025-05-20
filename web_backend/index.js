@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const morgan = require("morgan");
 const swaggerUi = require("swagger-ui-express");
 require("dotenv").config();
 
@@ -11,7 +12,7 @@ const registerWithoutInternetRoute = require("./controllers/routes/auth/register
 const parkingRoute = require("./controllers/routes/parking/parking");
 const { create_connection } = require("./config/dbConnection");
 const { annotations } = require("./documentation/swagger");
-const carEntry = require('./controllers/routes/carEntryAndticketGenerate/carEntry')
+const carEntry = require("./controllers/routes/carEntryAndticketGenerate/carEntry");
 // const generateTicket =require('./controllers/routes/carEntryAndticketGenerate/generateBill')
 
 // Initialize express app
@@ -32,7 +33,8 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 //   })
 // );
 
-app.use(cors())
+app.use(morgan("dev"));
+app.use(cors());
 
 // Route
 // app.use("/v1/auth/net/login", loginWithInternetRoute);
@@ -40,7 +42,7 @@ app.use("/v1/auth/login", loginWithoutInternetRoute),
   // app.use("/v1/auth/net/register", registerWithInternetRoute),
   app.use("/v1/auth/register", registerWithoutInternetRoute);
 app.use("/v1/parking", parkingRoute);
-app.use("/v1/car-entry", carEntry)
+app.use("/v1/car-entry", carEntry);
 // app.use("/v1/generate-ticket", generateTicket)
 
 app.use("/v1/api/swagger", swaggerUi.serve, swaggerUi.setup(annotations));
@@ -55,8 +57,13 @@ app.get("/", async (req, res) => {
   }
 });
 
+app.use((err, req, res) => {
+  console.log(err);
+  return res.status(500).send({ message: err.message });
+});
+
 // Start Server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 2020;
 app.listen(PORT, () => {
   // logger.info(`Server is running on port ${PORT}`);
   console.log(`app running at port ${PORT}`);

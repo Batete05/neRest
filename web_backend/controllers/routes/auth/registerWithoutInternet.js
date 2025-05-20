@@ -8,10 +8,13 @@ require("dotenv").config();
 
 router.post("/", async (req, res) => {
   try {
+    console.log(req.body);
+    
     // Validate user input
     const { error } = validateUser(req.body);
 
     if (error) {
+      console.log(error)
       return res.status(400).json({ message: error.details[0].message });
     }
 
@@ -23,6 +26,7 @@ router.post("/", async (req, res) => {
 
 
     if (existingUser) {
+      console.log("existing user")
       return res.status(400).json({ message: "That email is already in use." });
     }
 
@@ -53,6 +57,7 @@ router.post("/", async (req, res) => {
 
     return res.status(201).json({ token, message: "Success." });
   } catch (err) {
+    console.log(err.message)
     return res.status(500).json({ message: err.message });
   }
 });

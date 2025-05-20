@@ -44,10 +44,8 @@ router.post("/", verifyToken, authorizeRoles("ADMIN"), async (req, res) => {
 router.get("/all", async (req, res) => {
   try {
     const findParking = await Parking.findAll();
-    if (!findParking) {
-      return res.status(400).jaon({ message: "Can't get any Parking" });
-    }
-    return res.status(200).json({ message: findParking });
+
+    return res.status(200).json(findParking);
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
@@ -115,7 +113,7 @@ router.get("/", verifyToken, async (req, res) => {
     const totalPages = Math.ceil(count / limit);
 
     res.status(200).json({
-      Books,
+      parking: Books,
       pagination: {
         totalItems: count,
         totalPages,
